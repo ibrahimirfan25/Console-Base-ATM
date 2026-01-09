@@ -1,24 +1,21 @@
 from file_checker import FileManager
 from account_info_checker import AccountService
+from atm import Atm
 
 def main():
-    file_checker = FileManager()
-    file_checker.ensure_accounts_file()
+    file_manager = FileManager()
+    file_manager.ensure_accounts_file()
 
-    accounts = file_checker.read_accounts()
+    accounts = file_manager.read_accounts()
 
     account_service = AccountService()
     user = account_service.login(accounts)
 
     if user:
-        print("ACCESS GRANTED")
-        print(f"Welcome {user['NAME']}")
-        print(f" your balance is {user['Balance']}")
-
+        atm = Atm(user, file_manager)  
+        atm.start_menu()
     else:
-        print("invalid account number")
+        print("Invalid account number or PIN")
 
 if __name__ == "__main__":
     main()
-    
-

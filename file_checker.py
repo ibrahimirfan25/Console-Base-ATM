@@ -18,3 +18,20 @@ class FileManager:
         with open(self.filename, mode="r", newline="") as file:
             return list(csv.DictReader(file))
 
+    def update_balance(self, account_number, new_balance):
+        # 1. Read all accounts from CSV
+        accounts = self.read_accounts()
+
+        # 2. Update balance of matching account
+        for account in accounts:
+            if int(account["Account Number"]) == account_number:
+                account["Balance"] = str(new_balance)
+
+        # 3. Write updated accounts back to CSV
+        with open(self.filename, mode="w", newline="") as file:
+            writer = csv.DictWriter(
+                file,
+                fieldnames=["Account Number", "NAME", "PIN", "Balance"]
+            )
+            writer.writeheader()
+            writer.writerows(accounts)
